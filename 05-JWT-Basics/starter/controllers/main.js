@@ -1,20 +1,27 @@
-import CustomAPIError from "../errors/custom-error.js";
+import jwt from "jsonwebtoken";
+import { BadRequest } from "../errors/index.js";
 
 const login = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    throw new CustomAPIError("Please provide email and password", 400);
+    throw new BadRequest("Please provide username and password");
   }
 
-  res.send("Fake Login/Register/Signup");
+  const id = new Date().getTime();
+
+  const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+
+  res.status(200).json({ msg: "User created", token });
 };
 
 const dashboard = async (req, res) => {
   const luckyNumber = Math.floor(Math.random() * 100);
 
   res.status(200).json({
-    msg: `Hello, John Doe`,
+    msg: `Hello, ${req.user.username}`,
     secret: `Here is your authorized data, ${luckyNumber}`,
   });
 };

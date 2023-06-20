@@ -4,7 +4,7 @@ import "express-async-errors";
 
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
-import { default as mainRouter } from "./routes/main.js";
+import  mainRouter from "./routes/main.js";
 
 dotenv.config();
 
